@@ -1,0 +1,6 @@
+[package]
+name = "twelve__days_xmas"
+version = "0.1.0"
+authors = ["Darren Beukes <darren.beukes@gmail.com>"]
+
+[dependencies]
