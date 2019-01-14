@@ -11,7 +11,7 @@ fn main() {
     println!("The largest char is {}", result);
 }
 
-fn largest<T>(list: &[T]) -> T {
+fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
     let mut largest = list[0];
 
     for &item in list.iter() {
@@ -22,3 +22,28 @@ fn largest<T>(list: &[T]) -> T {
 
     largest
 }
+
+// fn largest_ref<T: PartialOrd>(list: &[T]) -> &T {
+//     let mut largest = &list[0];
+
+//     for &item in list.iter() {
+//         if item > *largest {
+//             largest = &item;
+//         }
+//     }
+
+//     &largest
+// }
+
+// fn largest_clone<T: PartialOrd + Clone>(list: &[T]) -> T {
+//     let cloned_list = *list.clone();
+//     let mut largest = cloned_list[0];
+
+//     for &item in cloned_list.iter() {
+//         if item > largest {
+//             largest = item;
+//         }
+//     }
+
+//     largest
+// }
