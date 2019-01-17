@@ -2,6 +2,9 @@ use std::thread;
 use std::time::Duration;
 use std::collections::HashMap;
 
+use std::cmp::Eq;
+use std::hash::Hash;
+
 fn main() {
     let simulated_user_specified_value = 16;
     let simulated_random_number = 7;
@@ -41,20 +44,26 @@ fn generate_workout(intensity: u32, random_numnber: u32) {
     }
 }
 
-struct Cacher<T> where T: Fn(u32) -> u32 {
+struct Cacher<T, K, V> 
+    where T: Fn(K) -> V, 
+          K: Eq + Hash + Copy, 
+          V: Copy {
     calculation: T,
-    values: HashMap<u32, u32>,
+    values: HashMap<K, V>,
 }
 
-impl<T> Cacher<T> where T: Fn(u32) -> u32 {
-    fn new(calculation: T) -> Cacher<T> {
+impl<T, K, V> Cacher<T, K, V>
+    where T: Fn(K) -> V,
+          K: Eq + Hash + Copy,
+          V: Copy {
+    fn new(calculation: T) -> Cacher<T, K, V> {
         Cacher {
             calculation,
             values: HashMap::new(),
         }
     }
 
-    fn value(&mut self, arg: u32) -> u32 {
+    fn value(&mut self, arg: K) -> V {
         match self.values.get(&arg) {
             Some(v) => *v,
             None => {
