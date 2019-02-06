@@ -1,5 +1,5 @@
 [package]
-name = "publishing-crates"
+name = "art"
 version = "0.1.0"
 authors = ["Darren Beukes <code@darrenbeukes.com>"]
 edition = "2018"

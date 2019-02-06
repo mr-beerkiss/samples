@@ -1,3 +1,7 @@
+//! # My Crate
+//! `my_crate` is a collection of utilities to make performing certain 
+//! calculation functions more convenient.
+
 /// Adds one to the number given.
 /// 
 /// # Examples
@@ -6,8 +10,6 @@
 /// 
 /// assert_eq!(6, my_crate::add_one(5));
 /// ```
-mod my_crate;
-
 pub fn add_one(x: i32) -> i32 {
     x + 1
 }
