@@ -3,3 +3,5 @@ node_modules
 hello-world/**/hello
 hello-world/**/*.o
 
+*.dSYM
+.DS_Store

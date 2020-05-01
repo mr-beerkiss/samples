@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Workers Test</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <h1>Web Workers Test</h1>
+  <p>
+    I am a very basic counter: <span class="js-hook">0</span>
+  </p>
+  <p>
+    Fibonacci Result: <span class="js-hook-result"></span>
+  </p>
+  <p>
+    Fibonacci Time: <span class="js-hook-time"></span>
+  </p>
+  <div>
+    <input type="number" name="fibTerm" class="js-hook-field">  
+    <button class="js-hook-button">Calculate</button>
+  </div>
+  <h3>Interactive Document Things</h3>
+  <div>
+    <p>
+      Times Clicked: <span class="js-hook-interactive-field">0</span>
+    </p>
+    <button class="js-hook-interactive-button">Click Me!</button>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>

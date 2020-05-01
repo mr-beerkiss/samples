@@ -1,0 +1,18 @@
+[package]
+name = "whisper"
+version = "0.1.0"
+authors = ["Darren Beukes <code@darrenbeukes.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+vst = "0.0.1"
+# if you aren't following this tutorial to a T, and a newer version
+# has been released, you might wish to get the crate directly
+# off of our official Github repository like this:
+# vst = { git = "https://github.com/rust-dsp/rust-vst" }
+
+[lib]
+name = "whisper"
+crate-type = ["cdylib"]
