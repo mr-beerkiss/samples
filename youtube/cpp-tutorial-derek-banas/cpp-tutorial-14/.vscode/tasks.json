@@ -1,0 +1,22 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "shell",
+      "label": "Buildy build",
+      "command": "/usr/bin/clang++",
+      "args": [
+        "-g",
+        // "${file}",
+        "${workspaceFolder}/*.cpp",
+        "-o",
+        "${fileDirname}/${fileBasenameNoExtension}"
+      ],
+      "options": {
+        "cwd": "/usr/bin"
+      },
+      "problemMatcher": ["$gcc"],
+      "group": "build"
+    }
+  ]
+}

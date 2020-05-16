@@ -1,4 +1,4 @@
-#include "util.hpp"
+#include "util.h"
 
 std::vector<int> Range(int start, int end, int step)
 {
