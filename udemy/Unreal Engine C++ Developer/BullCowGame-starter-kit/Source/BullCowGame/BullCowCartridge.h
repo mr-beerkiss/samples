@@ -15,14 +15,16 @@ public:
 	virtual void BeginPlay() override;
 	virtual void OnInput(const FString &Input) override;
 	void InitGame();
+	void PrintHint();
 	void EndGame(const bool Winner);
 	static bool IsIsogram(const FString &Word);
-	TArray<FString> AnalyseWord(const FString &Word);
+	TArray<FString> AnalyseWord(const FString &Word) const;
 
 	// Your declarations go below!
 private:
 	FString SecretWord;
 	TMap<char, int32> LettersAndIndexes;
 	int32 Lives;
+	int32 Hints;
 	bool GameOver;
 };
