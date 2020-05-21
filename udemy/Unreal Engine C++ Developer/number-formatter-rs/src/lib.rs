@@ -1,18 +1,10 @@
 pub fn format_number(number: i32) -> String {
-    let number = Some(number);
-    match number {
-        Some(x)
-            if x.to_string().ends_with("11")
-                || x.to_string().ends_with("12")
-                || x.to_string().ends_with("13") =>
-        {
-            format!("{}th", x)
-        }
-        Some(x) if x % 10 == 1 => format!("{}st", x),
-        Some(x) if x % 10 == 2 => format!("{}nd", x),
-        Some(x) if x % 10 == 3 => format!("{}rd", x),
-        Some(x) => format!("{}th", x),
-        None => panic!("Whoa that shouldn't have happened"),
+    match number.abs() {
+        n if (11..=13).contains(&(n % 100)) => format!("{}th", n),
+        n if (n % 10 == 1) => format!("{}st", n),
+        n if (n % 10 == 2) => format!("{}nd", n),
+        n if (n % 10 == 3) => format!("{}rd", n),
+        n => format!("{}th", n),
     }
 }
 
@@ -50,6 +42,7 @@ mod tests {
     fn it_formats_numbers_other_numbers_with_th() {
         assert_eq!(format_number(0), "0th");
         assert_eq!(format_number(5), "5th");
+        assert_eq!(format_number(10), "10th");
         assert_eq!(format_number(17), "17th");
         assert_eq!(format_number(26), "26th");
         assert_eq!(format_number(59), "59th");
