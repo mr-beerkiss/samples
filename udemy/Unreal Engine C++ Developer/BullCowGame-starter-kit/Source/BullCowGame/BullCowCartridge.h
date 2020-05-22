@@ -24,6 +24,8 @@ public:
 private:
 	FString SecretWord;
 	TMap<char, int32> LettersAndIndexes;
+	TArray<FString> SecretWordList;
+	int32 SecretWordListSize;
 	int32 Lives;
 	int32 Hints;
 	bool GameOver;

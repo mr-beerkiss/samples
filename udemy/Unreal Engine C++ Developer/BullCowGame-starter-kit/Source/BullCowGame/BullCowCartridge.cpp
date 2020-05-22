@@ -1,20 +1,27 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "BullCowCartridge.h"
+#include "HiddenWords.h"
 
 void UBullCowCartridge::BeginPlay() // When the game starts
 {
     Super::BeginPlay();
+
+    for (const auto Word : Words)
+        if (Word.Len() >= 4 && Word.Len() <= 8 && IsIsogram(Word) && Word != "hint")
+            SecretWordList.Emplace(Word);
+
+    SecretWordListSize = SecretWordList.Num();
+
     InitGame();
 }
 
 void UBullCowCartridge::InitGame()
 {
     GameOver = false;
-    SecretWord = "lip";
-    // Call them isograms
-    // SecretWord = "candor";
-    SecretWord = "canopy";
-
+    SecretWord = SecretWordList[FMath::RandRange(0, SecretWordListSize - 1)];
+    // always useful to know how to log
+    // https://subscription.packtpub.com/book/game_development/9781785885549/1/ch01lvl1sec20/ue4-logging-with-ue-log
+    UE_LOG(LogTemp, Warning, TEXT("Hidden word is: %s"), *SecretWord);
     int32 Index = 0;
 
     for (auto Letter : SecretWord)
@@ -27,6 +34,7 @@ void UBullCowCartridge::InitGame()
     // TODO: Why?
 
     PrintLine(TEXT("Welcome to Bull Cow!"));
+    PrintLine(TEXT("There are %i possible words."), SecretWordListSize);
     PrintLine(TEXT("Guess the %i letter word."), Lives);
     PrintLine(TEXT("If you need help, enter: hint"));
     PrintLine(TEXT("You have %i lives remaining"), Lives);
