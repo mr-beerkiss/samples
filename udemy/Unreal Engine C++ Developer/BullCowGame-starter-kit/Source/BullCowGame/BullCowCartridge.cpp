@@ -107,12 +107,10 @@ void UBullCowCartridge::PrintHint() {
   PrintLine(TEXT("You have %d hints left"), --Hints);
 }
 
-void UBullCowCartridge::AnalyseWord(const FString& Word, int32& Bulls, int32& Cows) const {
+
+FBullCowCount UBullCowCartridge::AnalyseWord(const FString& Word) const {
   int32 Index = 0;
-  // TODO: According to lecture, out params should be initialised in function to prevent 
-  // junk being returned. Is that true?
-  Bulls = 0;
-  Cows = 0;
+  FBullCowCount Result;
   for (auto Letter : Word) {
     // Interestingly TArray::Find returns a pointer, and as a result the pointer
     // must also be declared const in order to satisify the const constraint of
@@ -122,42 +120,15 @@ void UBullCowCartridge::AnalyseWord(const FString& Word, int32& Bulls, int32& Co
 
     if (LetterIndex != nullptr) {
       if (*LetterIndex == Index)
-        Bulls++;
+        Result.Bulls++;
       else
-        Cows++;
-    }
-
-    Index += 1;
-  }
-}
-
-// `const` functions are functions/methods that do no change member variables
-TArray<FString> UBullCowCartridge::AnalyseWord(const FString& Word) const {
-  TArray<FString> results;
-
-  int32 Index = 0;
-  for (auto Letter : Word) {
-    // Interestingly TArray::Find returns a pointer, and as a result the pointer
-    // must also be declared const in order to satisify the const constraint of
-    // the function Note this is point not to const int, not a const pointer to
-    // an int (I think that's the right way around)
-    const int* LetterIndex = LettersAndIndexes.Find(Letter);
-
-    if (LetterIndex != nullptr) {
-      // Note: Using Emplace will use the String literal to directly to create
-      // the element whereas Add/Push will copy or move the value into the
-      // TArray. The former is the preferred method for non-trivial allocations
-      // like FString
-      if (*LetterIndex == Index)
-        results.Emplace(TEXT("BULL"));
-      else
-        results.Emplace(TEXT("COW"));
+        Result.Cows++;
     }
 
     Index += 1;
   }
 
-  return results;
+  return Result;
 }
 
 void UBullCowCartridge::OnInput(const FString& PlayerInput) // When the player hits enter
@@ -194,54 +165,15 @@ void UBullCowCartridge::OnInput(const FString& PlayerInput) // When the player h
     return;
   }
 
-  int32 Bulls, Cows;
-  AnalyseWord(PlayerInput, Bulls, Cows);
+  FBullCowCount result = AnalyseWord(PlayerInput);
 
-  
-
-  PrintLine(TEXT("You have %i BULLS and %i COWS"), Bulls, Cows);
+  PrintLine(TEXT("You have %i BULLS and %i COWS"), result.Bulls, result.Cows);
 
   Lives -= 1;
   if (Lives == 0) {
     EndGame(false);
     return;
   }
-
-  // FString ResultStr;
-
-  // for (int32 Index = 0; Index != Bulls; Index++) {
-  //   ResultStr += TEXT("BULL ");
-  // }
-
-  // for (int32 Index = 0; Index != Cows; Index++) {
-  //   ResultStr += TEXT("COW ");
-  // }
-
-  // if (ResultStr.Len() != 0) {
-  //   PrintLine(ResultStr);
-  // } else {
-  //   PrintLine(TEXT("WHOOPS! No correct letters"));
-  // }
-
-  // auto Results = AnalyseWord(PlayerInput);
-  // FString ResultStr;
-
-  // for (int32 Index = 0; Index != Results.Num(); ++Index) {
-  //   ResultStr += Results[Index];
-  //   ResultStr += TEXT(" ");
-  // }
-
-  // if (ResultStr.Len() != 0) {
-  //   PrintLine(ResultStr);
-  // } else {
-  //   PrintLine(TEXT("WHOOPS! No correct letters"));
-  // }
-  // Lives -= 1;
-
-  // if (Lives == 0) {
-  //   EndGame(false);
-  //   return;
-  // }
 
   PrintLine(TEXT("You have %d lives remaining"), Lives);
 }
