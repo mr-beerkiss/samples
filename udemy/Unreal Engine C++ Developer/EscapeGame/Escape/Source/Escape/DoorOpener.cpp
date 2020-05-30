@@ -12,6 +12,13 @@ UDoorOpener::UDoorOpener()
   // ...
 }
 
+void UDoorOpener::OpenDoor(const float DeltaTime)
+{
+  CurrentYaw = FMath::FInterpTo(CurrentYaw, TargetYaw, DeltaTime, 2);
+  FRotator DoorRotation{0.f, CurrentYaw, 0.f};
+  GetOwner()->SetActorRotation(DoorRotation);
+}
+
 // Called when the game starts
 void UDoorOpener::BeginPlay()
 {
@@ -28,7 +35,8 @@ void UDoorOpener::TickComponent(float DeltaTime, ELevelTick TickType,
 {
   Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-  CurrentYaw = FMath::FInterpTo(CurrentYaw, TargetYaw, DeltaTime, 2);
-  FRotator DoorRotation{0.f, CurrentYaw, 0.f};
-  GetOwner()->SetActorRotation(DoorRotation);
+  if (PressurePlate->IsOverlappingActor(ActorThatOpens))
+  {
+    OpenDoor(DeltaTime);  
+  }
 }
