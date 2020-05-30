@@ -1,0 +1,9 @@
+{
+	"files.exclude": {
+		"E:/Code/github.com/mr-beerkiss/samples/udemy/Unreal Engine C++ Developer/EscapeGame/Escape/.vscode": true,
+		"E:/Code/github.com/mr-beerkiss/samples/udemy/Unreal Engine C++ Developer/EscapeGame/Escape/Content": true,
+		"E:/Code/github.com/mr-beerkiss/samples/udemy/Unreal Engine C++ Developer/EscapeGame/Escape/Intermediate": true,
+		"E:/Code/github.com/mr-beerkiss/samples/udemy/Unreal Engine C++ Developer/EscapeGame/Escape/Saved": true
+	},
+	"editor.formatOnSave": true
+}
