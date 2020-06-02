@@ -5,8 +5,8 @@
 #include "Components/ActorComponent.h"
 #include "CoreMinimal.h"
 #include "Engine/TriggerVolume.h"
+#include "Engine/World.h"
 #include "GameFramework/Actor.h"
-
 #include "DoorOpener.generated.h"
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -24,15 +24,25 @@ protected:
 
 private:
   UPROPERTY(EditAnywhere)
-  float TargetYaw = -90.f;
+  float OpenAngle = -90.f;
 
   float InitialYaw;
   float CurrentYaw;
 
   UPROPERTY(EditAnywhere)
-  ATriggerVolume* PressurePlate;
+  float CloseDelay = 0.f;
 
   UPROPERTY(EditAnywhere)
+  float ClosingSpeed = 1.f;
+
+  UPROPERTY(EditAnywhere)
+  float OpeningSpeed = 1.f;
+  
+  float LastTimeInTriggerVolume;
+
+  UPROPERTY(EditAnywhere)
+  ATriggerVolume* PressurePlate;
+
   AActor* ActorThatOpens;
 
 public:
@@ -42,4 +52,7 @@ public:
 
   // opens the door
   void OpenDoor(float DeltaTime);
+
+  // closes the door
+  void CloseDoor(const float DeltaTime);
 };

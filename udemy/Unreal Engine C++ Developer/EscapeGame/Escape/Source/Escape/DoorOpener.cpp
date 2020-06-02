@@ -14,7 +14,15 @@ UDoorOpener::UDoorOpener()
 
 void UDoorOpener::OpenDoor(const float DeltaTime)
 {
-  CurrentYaw = FMath::FInterpTo(CurrentYaw, TargetYaw, DeltaTime, 2);
+  CurrentYaw = FMath::FInterpTo(CurrentYaw, OpenAngle, DeltaTime, OpeningSpeed);
+  FRotator DoorRotation{0.f, CurrentYaw, 0.f};
+  GetOwner()->SetActorRotation(DoorRotation);
+}
+
+void UDoorOpener::CloseDoor(const float DeltaTime)
+{
+  // CurrentYaw = FMath::FInterpConstantTo(CurrentYaw, InitialYaw, DeltaTime, 5);
+  CurrentYaw = FMath::FInterpTo(CurrentYaw, InitialYaw, DeltaTime, ClosingSpeed);
   FRotator DoorRotation{0.f, CurrentYaw, 0.f};
   GetOwner()->SetActorRotation(DoorRotation);
 }
@@ -25,8 +33,16 @@ void UDoorOpener::BeginPlay()
   Super::BeginPlay();
   InitialYaw = GetOwner()->GetActorRotation().Yaw;
   CurrentYaw = InitialYaw;
-  // TargetYaw = InitialYaw + TargetYaw;
-  TargetYaw += InitialYaw;
+  OpenAngle += InitialYaw;
+ 
+  ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
+  
+  if (!PressurePlate)
+  {
+    UE_LOG(LogTemp, Error,
+      TEXT("%s uses the DoorOpener component but has not assigned a trigger volume PressurePlate"),
+      *GetOwner()->GetName());
+  }
 }
 
 // Called every frame
@@ -35,8 +51,20 @@ void UDoorOpener::TickComponent(float DeltaTime, ELevelTick TickType,
 {
   Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-  if (PressurePlate->IsOverlappingActor(ActorThatOpens))
+  if (PressurePlate)
   {
-    OpenDoor(DeltaTime);  
+    if (PressurePlate->IsOverlappingActor(ActorThatOpens))
+    {
+      LastTimeInTriggerVolume = GetWorld()->GetTimeSeconds();
+      OpenDoor(DeltaTime);
+    }
+    else
+    {     
+      if (GetWorld()->GetTimeSeconds() - LastTimeInTriggerVolume > CloseDelay)
+      {
+        CloseDoor(DeltaTime);  
+      }
+    }
+      
   }
 }

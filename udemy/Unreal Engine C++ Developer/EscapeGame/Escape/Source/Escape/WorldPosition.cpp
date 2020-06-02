@@ -24,15 +24,15 @@ void UWorldPosition::BeginPlay() {
 
   UE_LOG(LogTemp, Warning, TEXT("Actor location is %s"), *Location);
 
-  FVector LocationVec = Owner->GetTransform().GetLocation();
-
-  UE_LOG(LogTemp, Warning, TEXT("This object's transform's location: X: %.5f, Y: %.5f, Z: %.5f"),
-         LocationVec.X, LocationVec.Y, LocationVec.Z);
-
-  FVector TranslationVec = Owner->GetTransform().GetTranslation();
-
-  UE_LOG(LogTemp, Warning, TEXT("This object's transform's translation: X: %.5f, Y: %.5f, Z: %.5f"),
-         TranslationVec.X, TranslationVec.Y, TranslationVec.Z);
+  // FVector LocationVec = Owner->GetTransform().GetLocation();
+  //
+  // UE_LOG(LogTemp, Warning, TEXT("This object's transform's location: X: %.5f, Y: %.5f, Z: %.5f"),
+  //        LocationVec.X, LocationVec.Y, LocationVec.Z);
+  //
+  // FVector TranslationVec = Owner->GetTransform().GetTranslation();
+  //
+  // UE_LOG(LogTemp, Warning, TEXT("This object's transform's translation: X: %.5f, Y: %.5f, Z: %.5f"),
+  //        TranslationVec.X, TranslationVec.Y, TranslationVec.Z);
 }
 
 // Called every frame
