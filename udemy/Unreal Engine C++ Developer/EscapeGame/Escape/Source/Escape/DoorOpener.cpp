@@ -34,15 +34,41 @@ void UDoorOpener::BeginPlay()
   InitialYaw = GetOwner()->GetActorRotation().Yaw;
   CurrentYaw = InitialYaw;
   OpenAngle += InitialYaw;
- 
+
   ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
-  
+
   if (!PressurePlate)
   {
-    UE_LOG(LogTemp, Error,
-      TEXT("%s uses the DoorOpener component but has not assigned a trigger volume PressurePlate"),
-      *GetOwner()->GetName());
+    UE_LOG(
+        LogTemp, Error,
+        TEXT(
+            "%s uses the DoorOpener component but has not assigned a trigger volume PressurePlate"),
+        *GetOwner()->GetName());
   }
+}
+
+float UDoorOpener::TotalMassOfActors() const
+{
+
+  float TotalMass = 0.f;
+
+  if (!PressurePlate)
+    0.f;
+
+  TArray<AActor*> OverlappingActors;
+
+  PressurePlate->GetOverlappingActors(OUT OverlappingActors);
+
+  for (const auto* Actor : OverlappingActors)
+  {
+    float ActorMass = Actor->FindComponentByClass<UPrimitiveComponent>()->GetMass();
+    TotalMass += ActorMass;
+    // UE_LOG(LogTemp, Warning, TEXT("%s on pressure plate. Mass = %s, Total Mass = %s"),
+    //  *Actor->GetName(), *FString::SanitizeFloat(ActorMass),
+    //  *FString::SanitizeFloat(TotalMass));
+  }
+
+  return TotalMass;
 }
 
 // Called every frame
@@ -53,18 +79,19 @@ void UDoorOpener::TickComponent(float DeltaTime, ELevelTick TickType,
 
   if (PressurePlate)
   {
-    if (PressurePlate->IsOverlappingActor(ActorThatOpens))
+    // if (PressurePlate->IsOverlappingActor(ActorThatOpens))
+    if (TotalMassOfActors() > MassRequiredToOpen)
     {
+      // TotalMassOfActors();
       LastTimeInTriggerVolume = GetWorld()->GetTimeSeconds();
       OpenDoor(DeltaTime);
     }
     else
-    {     
+    {
       if (GetWorld()->GetTimeSeconds() - LastTimeInTriggerVolume > CloseDelay)
       {
-        CloseDoor(DeltaTime);  
+        CloseDoor(DeltaTime);
       }
     }
-      
   }
 }

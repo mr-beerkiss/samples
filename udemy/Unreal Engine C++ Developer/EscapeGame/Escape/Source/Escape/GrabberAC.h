@@ -2,35 +2,46 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h"
+
 #include "GrabberAC.generated.h"
 
 #define OUT
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class ESCAPE_API UGrabberAC : public UActorComponent
 {
   GENERATED_BODY()
 
 public:
+  // Called every frame
+  virtual void TickComponent(float DeltaTime, ELevelTick TickType,
+                             FActorComponentTickFunction* ThisTickFunction) override;
+  // Called when the game starts
+  virtual void BeginPlay() override;
+
+protected:
   // Sets default values for this component's properties
   UGrabberAC();
 
 private:
   float Reach;
 
-    UPhysicsHandleComponent* PhysicsHandle = nullptr;
-  
-  
-protected:
-  // Called when the game starts
-  virtual void BeginPlay() override;
+  UPROPERTY(EditAnywhere)
+  bool bShowReach = true;
 
-public:
-  // Called every frame
-  virtual void TickComponent(float DeltaTime, ELevelTick TickType,
-                             FActorComponentTickFunction* ThisTickFunction) override;
+  UPhysicsHandleComponent* PhysicsHandle = nullptr;
+  UInputComponent* InputComponent = nullptr;
+
+  void Grab();
+  void Release();
+
+  void FindPhysicsHandle();
+  void SetupInputComponent();
+
+  FHitResult GetFirstPhysicsBodyInReach() const;
+  void GetPlayerReach(FVector* out_ReachStart, FVector* out_ReachEnd) const;
 };
