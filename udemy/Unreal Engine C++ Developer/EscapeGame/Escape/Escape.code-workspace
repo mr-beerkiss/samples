@@ -8,7 +8,6 @@
 		}
 	],
 	"settings": {
-		"typescript.tsc.autoDetect": "off",
-		"editor.formatOnSave": true
+		"typescript.tsc.autoDetect": "off"
 	}
 }

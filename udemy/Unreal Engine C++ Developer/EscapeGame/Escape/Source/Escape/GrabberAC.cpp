@@ -47,8 +47,6 @@ void UGrabberAC::BeginPlay()
 {
   Super::BeginPlay();
 
-  Reach = 100.f;
-
   FindPhysicsHandle();
 
   SetupInputComponent();
@@ -56,7 +54,7 @@ void UGrabberAC::BeginPlay()
 
 void UGrabberAC::Grab()
 {
-  if (PhysicsHandle->GrabbedComponent)
+  if (PhysicsHandle && PhysicsHandle->GrabbedComponent)
   {
     PhysicsHandle->ReleaseComponent();
     UE_LOG(LogTemp, Warning, TEXT("DROP IT!"));
@@ -73,6 +71,11 @@ void UGrabberAC::Grab()
 
   if (Hit.GetActor())
   {
+    if (!PhysicsHandle)
+    {
+      UE_LOG(LogTemp, Error, TEXT("Physics Handle not set for %s"), *Hit.GetActor()->GetName());
+      return;
+    }
     UE_LOG(LogTemp, Warning, TEXT("Grabbed component %s"), *Hit.GetActor()->GetName());
     UPrimitiveComponent* ComponentToGrab = Hit.GetComponent();
     PhysicsHandle->GrabComponentAtLocation(ComponentToGrab, NAME_None, LineTraceEnd);
@@ -94,7 +97,7 @@ void UGrabberAC::TickComponent(float DeltaTime, ELevelTick TickType,
 {
   Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-  if (PhysicsHandle->GrabbedComponent)
+  if (PhysicsHandle && PhysicsHandle->GrabbedComponent)
   {
     FVector PlayerViewPointLocation;
     FVector LineTraceEnd;

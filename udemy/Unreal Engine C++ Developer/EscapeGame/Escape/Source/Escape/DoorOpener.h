@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Components/ActorComponent.h"
+#include "Components/AudioComponent.h"
 #include "Components/PrimitiveComponent.h"
 #include "CoreMinimal.h"
 
@@ -47,6 +48,11 @@ private:
   float InitialYaw;
   float CurrentYaw;
 
+  UPROPERTY()
+  UAudioComponent* Sound = nullptr;
+
+  bool bDoorOpening;
+
   UPROPERTY(EditAnywhere)
   float CloseDelay = 0.f;
 
@@ -62,7 +68,5 @@ private:
   float LastTimeInTriggerVolume;
 
   UPROPERTY(EditAnywhere)
-  ATriggerVolume* PressurePlate;
-
-  AActor* ActorThatOpens;
+  ATriggerVolume* PressurePlate = nullptr;
 };
