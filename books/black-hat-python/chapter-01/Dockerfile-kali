@@ -1,0 +1,11 @@
+FROM kalilinux/kali-rolling:latest
+
+# Split out metasploit install to make future installs a little snappier.
+# RUN apt-get update && metasploit-framework
+
+RUN apt-get update && apt-get install -y \
+	net-tools nmap iputils-ping \
+	dnsutils netcat-traditional
+
+ENTRYPOINT ["bash"]
+
